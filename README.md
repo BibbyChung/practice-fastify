@@ -5,8 +5,10 @@ This project was bootstrapped with Fastify-CLI.
 
 ## my commands
 
+```bash
 npm install fastify-cli -g
 fastify generate fastify01 --esm --lang=ts --standardlint
+```
 
 ## Available Scripts
 
