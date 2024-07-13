@@ -8,6 +8,8 @@ This project was bootstrapped with Fastify-CLI.
 ```bash
 npm install fastify-cli -g
 fastify generate fastify01 --esm --lang=ts --standardlint
+
+pnpm add @trpc/server fastify zod
 ```
 
 ## Available Scripts

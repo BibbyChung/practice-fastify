@@ -1,0 +1,8 @@
+### text/html
+http://localhost:3000/api/hi
+
+### json
+http://localhost:3000/api/hi-json
+
+### trpc
+GET http://localhost:3000/api/trpc/user.getUserById?input="0001"
