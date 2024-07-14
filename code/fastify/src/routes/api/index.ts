@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import { appWSCaller } from "../../trpc/_init.js";
+// import { appWSCaller } from "../../trpc/_init.js";
 
 const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get("/healthz", async function (request, reply) {

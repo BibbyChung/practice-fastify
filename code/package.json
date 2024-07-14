@@ -1,0 +1,13 @@
+{
+  "name": "fastify01",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "i": "pnpm -r i",
+    "ls": "pnpm m ls --json --depth=-1",
+    "dev": "pnpm run --parallel --filter=./* dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

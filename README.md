@@ -6,13 +6,37 @@ This project was bootstrapped with Fastify-CLI.
 ## my commands
 
 ```bash
+cd code
+
 npm install fastify-cli -g
-fastify generate fastify01 --esm --lang=ts --standardlint
+fastify generate fastify --esm --lang=ts --standardlint
 
 pnpm add @trpc/server fastify zod
 
 pnpm add @fastify/websocket
 pnpm add @types/ws -D
+```
+
+## project struecture
+
+```bash
+tree -L 3
+
+.
+├── README.md
+└── code
+    ├── fastify
+    │   ├── dist
+    │   ├── node_modules
+    │   ├── package.json
+    │   ├── src
+    │   ├── test
+    │   └── tsconfig.json
+    ├── node_modules
+    ├── package.json
+    ├── pnpm-lock.yaml
+    └── pnpm-workspace.yaml
+
 ```
 
 ## Available Scripts
