@@ -1,4 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
+import { appWSCaller } from "../../trpc/_init.js";
 
 const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get("/healthz", async function (request, reply) {
@@ -15,6 +16,16 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   });
 
   fastify.get("/hi-json", async function (request, reply) {
+    // appWSCaller({ request, reply } as any)
+    //   .chat.getChatNameInfo("xxx")
+    //   .then((o) => {
+    //     return o.subscribe({
+    //       next: (v) => {
+    //         console.log(v);
+    //       },
+    //     });
+    //   });
+
     return reply.send({
       wording: "hello-world",
     });

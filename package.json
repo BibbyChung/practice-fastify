@@ -22,6 +22,7 @@
   "dependencies": {
     "@fastify/autoload": "^5.0.0",
     "@fastify/sensible": "^5.0.0",
+    "@fastify/websocket": "^10.0.1",
     "@trpc/server": "^10.45.2",
     "fastify": "^4.28.1",
     "fastify-cli": "^6.2.1",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.4",
+    "@types/ws": "^8.5.11",
     "c8": "^9.0.0",
     "concurrently": "^8.2.2",
     "fastify-tsconfig": "^2.0.0",

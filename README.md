@@ -10,6 +10,9 @@ npm install fastify-cli -g
 fastify generate fastify01 --esm --lang=ts --standardlint
 
 pnpm add @trpc/server fastify zod
+
+pnpm add @fastify/websocket
+pnpm add @types/ws -D
 ```
 
 ## Available Scripts

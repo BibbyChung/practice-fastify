@@ -6,3 +6,18 @@ http://localhost:3000/api/hi-json
 
 ### trpc
 GET http://localhost:3000/api/trpc/user.getUserById?input="0001"
+
+### trpc-ws
+WS ws://localhost:3000/api/trpc-ws
+# input="bbWS"
+# {{@streaming
+#   async function writeStream(){
+#     await sleep(10000);
+#     $requestClient.send({
+#       "event": "ping",
+#       "reqid": 45
+#     });
+#     await sleep(1000);
+#   }
+#   exports.waitPromise = writeStream();
+# }}
