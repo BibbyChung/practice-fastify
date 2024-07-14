@@ -15,6 +15,8 @@ pnpm add @trpc/server fastify zod
 
 pnpm add @fastify/websocket
 pnpm add @types/ws -D
+
+pnpm add @trpc/client rxjs
 ```
 
 ## project struecture

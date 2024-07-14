@@ -5,7 +5,7 @@
   "scripts": {
     "i": "pnpm -r i",
     "ls": "pnpm m ls --json --depth=-1",
-    "dev": "pnpm run --parallel --filter=./* dev"
+    "dev": "pnpm run --parallel --filter=./code/* dev"
   },
   "keywords": [],
   "author": "",

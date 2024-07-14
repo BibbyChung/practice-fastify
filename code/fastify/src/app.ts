@@ -1,6 +1,7 @@
-import * as path from "path";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
+import cors from "@fastify/cors";
 import { FastifyPluginAsync } from "fastify";
+import * as path from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -50,6 +51,20 @@ const app: FastifyPluginAsync<AppOptions> = async (
     dir: path.join(__dirname, "routes"),
     options: opts,
     forceESM: true,
+  });
+
+  // add cors
+  fastify.register(cors, {
+    hook: "preHandler",
+    delegator: (req, callback) => {
+      const corsOptions = {
+        origin: false,
+      };
+      if (/localhost:4200$/m.test(req.headers.origin ?? "")) {
+        corsOptions.origin = true;
+      }
+      callback(null, corsOptions);
+    },
   });
 
   // add decorators
