@@ -5,6 +5,7 @@ import {
   wsLink,
 } from "@trpc/client";
 import { tap } from "rxjs";
+import superjson from "superjson";
 import type {
   AppRouterType,
   AppWSRouterType,
@@ -28,6 +29,7 @@ const consoleFn = (isLog: boolean) => () => {
 };
 
 export const trpc = createTRPCProxyClient<AppRouterType>({
+  transformer: superjson,
   links: [
     consoleFn(false),
     httpBatchLink({
@@ -43,6 +45,7 @@ export const trpc = createTRPCProxyClient<AppRouterType>({
 
 // configure TRPCClient to use WebSockets transport
 export const trpcWS = createTRPCProxyClient<AppWSRouterType>({
+  transformer: superjson,
   links: [
     wsLink({
       client: createWSClient({

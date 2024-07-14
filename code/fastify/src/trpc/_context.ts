@@ -1,5 +1,6 @@
 import { initTRPC } from "@trpc/server";
 import { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
+import superjson from "superjson";
 
 export const createContext = ({ req, res }: CreateFastifyContextOptions) => {
   const user = { name: req.headers.username ?? "anonymous" };
@@ -9,7 +10,9 @@ export const createContext = ({ req, res }: CreateFastifyContextOptions) => {
 
 export type Context = Awaited<ReturnType<typeof createContext>>;
 
-export const trpcContext = initTRPC.context<Context>().create();
+export const trpcContext = initTRPC.context<Context>().create({
+  transformer: superjson,
+});
 
 export const procedure = trpcContext.procedure;
 
