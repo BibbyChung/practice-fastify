@@ -1,13 +1,5 @@
 <script lang="ts">
-  import {
-    map,
-    Observable,
-    scan,
-    switchMap,
-    takeUntil,
-    tap,
-    type Unsubscribable,
-  } from "rxjs";
+  import { map, Observable, scan, switchMap, takeUntil } from "rxjs";
   import { onMount } from "svelte";
   import { trpc, trpcWS } from "./lib/common/trpc";
   import { getSubject } from "./lib/services/layout.service";
@@ -22,16 +14,18 @@
   );
 
   const wsResultStart$ = btnWSStart$.pipe(
-    switchMap(() => {
-      let sub: Unsubscribable;
-      return new Observable((observer) => {
-        sub = trpcWS.chat.getChatNameInfo.subscribe("client001", {
+    switchMap(() =>
+      new Observable((observer) => {
+        const sub = trpcWS.chat.getChatNameInfo.subscribe("client001", {
           onData: (v) => observer.next(v),
           onComplete: () => observer.complete(),
           onError: (err) => observer.error(err),
         });
-      }).pipe(takeUntil(btnWSStop$.pipe(tap(() => sub?.unsubscribe()))));
-    }),
+        return () => {
+          sub.unsubscribe();
+        };
+      }).pipe(takeUntil(btnWSStop$))
+    ),
     scan((pre, v) => {
       return `${pre} <br />
 ${JSON.stringify(v)}`;
