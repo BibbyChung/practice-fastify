@@ -19,6 +19,11 @@ pnpm add @types/ws -D
 pnpm add @trpc/client rxjs
 ```
 
+## todos
+
+- upgrade trpc to v11
+- sse
+
 ## project struecture
 
 ```bash
