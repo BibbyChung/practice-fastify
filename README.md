@@ -17,6 +17,11 @@ pnpm add @fastify/websocket
 pnpm add @types/ws -D
 
 pnpm add @trpc/client rxjs
+
+
+
+
+pnpm add svelte-routing
 ```
 
 ## todos
