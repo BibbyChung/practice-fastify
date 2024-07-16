@@ -1,5 +1,5 @@
 import { observable } from "@trpc/server/observable";
-import { filter } from "rxjs";
+import { filter, merge } from "rxjs";
 import { z } from "zod";
 import { getSubject } from "../common/util.js";
 import { procedure } from "./_context.js";
@@ -24,13 +24,22 @@ const chatNameHandle = async (opts: HandleOptsType<typeof chatNameInput>) =>
   });
 
 // chat
-const msgSubject$ = getSubject<z.infer<typeof sendMsgInput>>();
+const msgHistory: msgType[] = [
+  {
+    zoomId: 1,
+    userId: "Bibby",
+    msg: "test001",
+  },
+];
+const msgSubject$ = getSubject<msgType>();
+type msgType = z.infer<typeof sendMsgInput>;
 const sendMsgInput = z.object({
   zoomId: z.number(),
   userId: z.string(),
   msg: z.string(),
 });
 const sendMsgHandle = async (opts: HandleOptsType<typeof sendMsgInput>) => {
+  msgHistory.push(opts.input);
   msgSubject$.next(opts.input);
   return { status: 200 };
 };
@@ -39,10 +48,14 @@ const receiveMsgInput = z.object({
   roomId: z.number(),
 });
 const receiveMsgHandle = (opts: HandleOptsType<typeof receiveMsgInput>) =>
-  observable<z.infer<typeof sendMsgInput>>((observer) => {
-    const sub = msgSubject$
+  observable<msgType>((observer) => {
+    const msgHistory$ = getSubject<msgType>();
+    const sub = merge(msgHistory$, msgSubject$)
       .pipe(filter((a) => a.zoomId === opts.input.roomId))
       .subscribe(observer);
+
+    msgHistory.forEach((item) => msgHistory$.next(item));
+
     return () => {
       sub.unsubscribe();
     };
