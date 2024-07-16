@@ -18,10 +18,8 @@ pnpm add @types/ws -D
 
 pnpm add @trpc/client rxjs
 
-
-
-
 pnpm add svelte-routing
+npx @svelte-add/tailwindcss@latest --typography false
 ```
 
 ## todos

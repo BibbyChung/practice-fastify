@@ -3,10 +3,6 @@ import { trpcContext, type Context } from "./_context.js";
 import { userRoute } from "./user.route.js";
 import { chatRoute } from "./chat.route.js";
 
-// validation
-export const emptyInput = z.object({}).optional();
-
-
 // common
 export type HandleOptsType<T extends ZodTypeAny> = {
   ctx: Context;

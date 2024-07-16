@@ -28,6 +28,7 @@
     "fastify": "^4.28.1",
     "fastify-cli": "^6.2.1",
     "fastify-plugin": "^4.0.0",
+    "rxjs": "^7.8.1",
     "superjson": "^2.2.1",
     "zod": "^3.23.8"
   },

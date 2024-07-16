@@ -1,19 +1,33 @@
 import {
   BehaviorSubject,
-  type Observable,
-  Subject,
-  tap,
   filter,
   map,
   merge,
+  Observable,
   of,
+  Subject,
   switchMap,
   take,
+  tap,
+  type Subscriber,
+  type TeardownLogic,
 } from "rxjs";
 
 // rxjs
 export const getSubject = <T>() => new Subject<T>();
 export const getBehaviorSubject = <T>(v: T) => new BehaviorSubject(v);
+export const getObservable = <T>(
+  subscribe?:
+    | ((this: Observable<T>, subscriber: Subscriber<T>) => TeardownLogic)
+    | undefined
+) => new Observable(subscribe);
+export const getObserverSubscribe = <T>(ob: Subscriber<T>) => {
+  return {
+    onData: (v: T) => ob.next(v),
+    onError: (err: unknown) => ob.error(err),
+    onComplete: () => ob.complete(),
+  };
+};
 
 export const myTrace =
   <T>(messageKey: string) =>

@@ -1,8 +1,12 @@
 <script lang="ts">
-  import { map, Observable, scan, switchMap, takeUntil } from "rxjs";
+  import { map, scan, switchMap, takeUntil } from "rxjs";
   import { onMount } from "svelte";
   import { trpc, trpcWS } from "../lib/common/trpc";
-  import { getSubject } from "../lib/services/layout.service";
+  import {
+    getObservable,
+    getObserverSubscribe,
+    getSubject,
+  } from "../lib/services/layout.service";
 
   const btnGetUser$ = getSubject<boolean>();
   const btnWSStart$ = getSubject<boolean>();
@@ -15,12 +19,11 @@
 
   const wsResultStart$ = btnWSStart$.pipe(
     switchMap(() =>
-      new Observable((observer) => {
-        const sub = trpcWS.chat.getChatNameInfo.subscribe("client001", {
-          onData: (v) => observer.next(v),
-          onComplete: () => observer.complete(),
-          onError: (err) => observer.error(err),
-        });
+      getObservable((ob) => {
+        const sub = trpcWS.chat.getChatNameInfo.subscribe(
+          "client001",
+          getObserverSubscribe(ob)
+        );
         return () => {
           sub.unsubscribe();
         };

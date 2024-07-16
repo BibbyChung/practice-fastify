@@ -14,8 +14,26 @@ export interface TrpcPluginOptions {
 // The use of fastify-plugin is required to be able
 // to export the decorators to the outer scope
 export default fp<TrpcPluginOptions>(async (fastify, opts) => {
-  fastify.register(ws);
-
+  fastify.register(ws, {
+    options: {
+      maxPayload: 1048576, // 1MB
+      verifyClient: (info, done) => {
+        done(true);
+      },
+      clientTracking: true,
+      perMessageDeflate: true,
+    },
+    errorHandler: (error, connection, _req, _reply) => {
+      // error handle
+      console.error("ws get error:", error);
+      connection.terminate();
+    },
+    preClose: (done) => {
+      // close others
+      console.log("closse ws...");
+      done();
+    },
+  });
   fastify.register(fastifyTRPCPlugin, {
     prefix: "/api/trpc-ws",
     trpcOptions: {
