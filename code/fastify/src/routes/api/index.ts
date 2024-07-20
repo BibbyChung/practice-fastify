@@ -15,8 +15,9 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     return reply.status(200).send("hello-world");
   });
 
-  fastify.get("/hi-json", async function (request, reply) {
-    // appWSCaller({ request, reply } as any)
+  fastify.get("/hi-json", async function (req, res) {
+    // const ctx = { req, res, user: req.user };
+    // appWSCaller(ctx)
     //   .chat.getChatNameInfo("xxx")
     //   .then((o) => {
     //     return o.subscribe({
@@ -26,7 +27,7 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     //     });
     //   });
 
-    return reply.send({
+    return res.send({
       wording: "hello-world",
     });
   });

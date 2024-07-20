@@ -7,6 +7,7 @@ http://localhost:3000/api/hi-json
 ### trpc
 GET http://localhost:3000/api/trpc/user.getUserById?input="0001"
 
+# curl 'http://localhost:3000/api/trpc-ws' -H 'Upgrade: websocket' -H 'Connection: Upgrade' --verbose
 ### trpc-ws
 WS ws://localhost:3000/api/trpc-ws
 # input="bbWS"
