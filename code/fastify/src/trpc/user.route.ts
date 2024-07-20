@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { procedure } from "./_context.js";
+import { middleware, procedure } from "./_context.js";
 import { HandleOptsType } from "./_init.js";
+import { TRPCError } from "@trpc/server";
 
 type User = {
   id: string;
@@ -21,6 +22,21 @@ const getuserByIdHandle = async (
   return users[opts.input];
 };
 
+const userMiddleware = middleware(async ({ ctx, next }) => {
+  if (!ctx.user) {
+    // do something
+    // throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      user: ctx.user,
+    },
+  });
+});
+
 export const userRoute = {
-  getUserById: procedure.input(getUserByIdInput).query(getuserByIdHandle),
+  getUserById: procedure
+    .use(userMiddleware)
+    .input(getUserByIdInput)
+    .query(getuserByIdHandle),
 };

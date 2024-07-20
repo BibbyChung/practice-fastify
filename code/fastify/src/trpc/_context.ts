@@ -15,6 +15,7 @@ export const trpcContext = initTRPC.context<Context>().create({
 });
 
 export const procedure = trpcContext.procedure;
+export const middleware = trpcContext.middleware;
 
 // export const createMyContext =
 //   (
