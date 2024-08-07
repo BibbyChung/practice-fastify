@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { middleware, procedure } from "./_context.js";
 import { HandleOptsType } from "./_init.js";
-import { TRPCError } from "@trpc/server";
+// import { TRPCError } from "@trpc/server";
 
 type User = {
   id: string;
