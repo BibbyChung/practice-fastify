@@ -1,68 +1,59 @@
 <script lang="ts">
-  import { filter, scan, startWith, switchMap, tap } from "rxjs";
-  import { onMount } from "svelte";
-  import { trpcWS } from "../lib/common/trpc";
-  import {
-    getObservable,
-    getObserverSubscribe,
-    getSubject,
-  } from "../lib/services/layout.service";
+  import { filter, scan, startWith, switchMap, tap } from 'rxjs'
+  import { onMount } from 'svelte'
+  import { trpcWS } from '../lib/common/trpc'
+  import { getObservable, getObserverSubscribe, getSubject } from '../lib/services/layout.service'
 
   type msgType = {
-    userId: string;
-    msg: string;
-  };
+    userId: string
+    msg: string
+  }
 
-  export let id: string = "";
-  let inputMsgRef: HTMLInputElement;
-  let inputUserIdRef: HTMLInputElement;
+  export let id: string = ''
+  let inputMsgRef: HTMLInputElement
+  let inputUserIdRef: HTMLInputElement
 
-  const isReady$ = getSubject<boolean>();
-  const formSubmit$ = getSubject<boolean>();
+  const isReady$ = getSubject<boolean>()
+  const formSubmit$ = getSubject<boolean>()
 
   const receiveMsg$ = isReady$.pipe(
     switchMap(() =>
       getObservable<msgType>((ob) => {
-        const sub = trpcWS.chat.receiveMsg.subscribe(
-          { roomId: +id },
-          getObserverSubscribe(ob)
-        );
+        const sub = trpcWS.chat.receiveMsg.subscribe({ roomId: +id }, getObserverSubscribe(ob))
         return () => {
-          sub.unsubscribe();
-        };
+          sub.unsubscribe()
+        }
       })
     ),
     scan((acc, cur) => {
-      return [...acc, cur];
+      return [...acc, cur]
     }, [] as msgType[]),
     startWith([])
-  );
+  )
 
   const sendMsgSub = formSubmit$
     .pipe(
-      filter(
-        () => inputMsgRef.value.length > 0 && inputUserIdRef.value.length > 0
-      ),
+      filter(() => inputMsgRef.value.length > 0 && inputUserIdRef.value.length > 0),
       switchMap(() => {
         const msgObj = {
           zoomId: +id,
           userId: inputUserIdRef.value,
           msg: inputMsgRef.value,
-        };
-        return trpcWS.chat.sendMsg.mutate(msgObj);
+        }
+        return trpcWS.chat.sendMsg.mutate(msgObj)
       }),
       tap(() => {
-        inputMsgRef.value = "";
+        inputMsgRef.value = ''
       })
     )
-    .subscribe();
+    .subscribe()
 
   onMount(() => {
-    isReady$.next(true);
+    isReady$.next(true)
     return () => {
-      sendMsgSub.unsubscribe();
-    };
-  });
+      sendMsgSub.unsubscribe()
+    }
+  })
 </script>
 
 <div class="flex flex-row items-end h-[calc(100vh_-_8vh)]">
@@ -84,10 +75,7 @@
         </div>
       {/if}
     {/each}
-    <form
-      class="flex w-full"
-      on:submit|preventDefault={() => formSubmit$.next(true)}
-    >
+    <form class="flex w-full" on:submit|preventDefault={() => formSubmit$.next(true)}>
       <input bind:this={inputMsgRef} type="text" class="flex-grow p-4" />
       <input
         bind:this={inputUserIdRef}
@@ -95,10 +83,7 @@
         type="text"
         class="w-32 bg-slate-500 p-4"
       />
-      <button
-        on:click|preventDefault={() => formSubmit$.next(true)}
-        class="button"
-      >
+      <button on:click|preventDefault={() => formSubmit$.next(true)} class="button">
         submit (roomId={id})
       </button>
     </form>

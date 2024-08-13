@@ -1,10 +1,10 @@
 <script lang="ts">
-  import "./app.css";
-  import { Router, Link, Route } from "svelte-routing";
-  import Home from "./routes/home01.svelte";
-  import Chat01 from "./routes/chat01.svelte";
+  import './app.css'
+  import { Router, Link, Route } from 'svelte-routing'
+  import Home from './routes/home01.svelte'
+  import Chat01 from './routes/chat01.svelte'
 
-  export let url = "";
+  export let url = ''
 </script>
 
 <Router {url}>

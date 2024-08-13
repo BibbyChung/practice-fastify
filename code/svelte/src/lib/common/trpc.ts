@@ -1,47 +1,39 @@
-import {
-  createTRPCProxyClient,
-  createWSClient,
-  httpBatchLink,
-  wsLink,
-} from "@trpc/client";
-import { tap } from "rxjs";
-import superjson from "superjson";
-import type {
-  AppRouterType,
-  AppWSRouterType,
-} from "../../../../fastify/src/trpc/_init";
+import { createTRPCProxyClient, createWSClient, httpBatchLink, wsLink } from '@trpc/client'
+import { tap } from 'rxjs'
+import superjson from 'superjson'
+import type { AppRouterType, AppWSRouterType } from '../../../../fastify/src/trpc/_init'
 
 const consoleFn = (isLog: boolean) => () => {
   if (isLog) {
     return ({ op, next }: { op: any; next: any }) => {
-      console.log("->", op.type, op.path, op.input);
+      console.log('->', op.type, op.path, op.input)
 
       return next(op).pipe(
         tap({
           next(result) {
-            console.log("<-", op.type, op.path, op.input, ":", result);
+            console.log('<-', op.type, op.path, op.input, ':', result)
           },
         })
-      );
-    };
+      )
+    }
   }
-  return ({ op, next }: { op: any; next: any }) => next(op);
-};
+  return ({ op, next }: { op: any; next: any }) => next(op)
+}
 
 export const trpc = createTRPCProxyClient<AppRouterType>({
   transformer: superjson,
   links: [
     consoleFn(false),
     httpBatchLink({
-      url: "http://localhost:3000/api/trpc",
+      url: 'http://localhost:3000/api/trpc',
       headers() {
         return {
-          ["Authorization"]: `Bearer xxxxxxxxx`,
-        };
+          ['Authorization']: `Bearer xxxxxxxxx`,
+        }
       },
     }),
   ],
-});
+})
 
 // configure TRPCClient to use WebSockets transport
 export const trpcWS = createTRPCProxyClient<AppWSRouterType>({
@@ -53,4 +45,4 @@ export const trpcWS = createTRPCProxyClient<AppWSRouterType>({
       }),
     }),
   ],
-});
+})
