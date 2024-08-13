@@ -1,49 +1,46 @@
-import fp from "fastify-plugin";
-import {
-  fastifyTRPCPlugin,
-  FastifyTRPCPluginOptions,
-} from "@trpc/server/adapters/fastify";
-import { createContext } from "../trpc/_context.js";
-import { appWSRouter, type AppWSRouterType } from "../trpc/_init.js";
-import ws from "@fastify/websocket";
+import fp from 'fastify-plugin'
+import { fastifyTRPCPlugin, FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify'
+import { createContext } from '../trpc/_context.js'
+import { appWSRouter, type AppWSRouterType } from '../trpc/_init.js'
+import ws from '@fastify/websocket'
 
-export interface TrpcPluginOptions {
+export interface TrpcWsPluginOptions {
   // Specify Support plugin options here
 }
 
 // The use of fastify-plugin is required to be able
 // to export the decorators to the outer scope
-export default fp<TrpcPluginOptions>(async (fastify, opts) => {
+export default fp<TrpcWsPluginOptions>(async (fastify, opts) => {
   fastify.register(ws, {
     options: {
       maxPayload: 1048576, // 1MB
       verifyClient: (info, done) => {
-        done(true);
+        done(true)
       },
       clientTracking: true,
       perMessageDeflate: true,
     },
     errorHandler: (error, connection, _req, _reply) => {
       // error handle
-      console.error("ws get error:", error);
-      connection.terminate();
+      console.error('ws get error:', error)
+      connection.terminate()
     },
     preClose: (done) => {
       // close others
-      console.log("closse ws...");
-      done();
+      console.log('close ws...')
+      done()
     },
-  });
+  })
   fastify.register(fastifyTRPCPlugin, {
-    prefix: "/api/trpc-ws",
+    prefix: '/api/trpc-ws',
     trpcOptions: {
       router: appWSRouter,
       createContext,
       onError({ path, error }) {
         // report to error monitoring
-        console.error(`Error in tRPC handler on path '${path}':`, error);
+        console.error(`Error in tRPC handler on path '${path}':`, error)
       },
-    } satisfies FastifyTRPCPluginOptions<AppWSRouterType>["trpcOptions"],
+    } satisfies FastifyTRPCPluginOptions<AppWSRouterType>['trpcOptions'],
     useWSS: true,
-  });
-});
+  })
+})

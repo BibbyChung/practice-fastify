@@ -1,10 +1,7 @@
-import {
-  fastifyTRPCPlugin,
-  FastifyTRPCPluginOptions,
-} from "@trpc/server/adapters/fastify";
-import fp from "fastify-plugin";
-import { createContext } from "../trpc/_context.js";
-import { appRouter, type AppRouterType } from "../trpc/_init.js";
+import { fastifyTRPCPlugin, FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify'
+import fp from 'fastify-plugin'
+import { createContext } from '../trpc/_context.js'
+import { appRouter, type AppRouterType } from '../trpc/_init.js'
 
 export interface TrpcPluginOptions {
   // Specify Support plugin options here
@@ -14,14 +11,14 @@ export interface TrpcPluginOptions {
 // to export the decorators to the outer scope
 export default fp<TrpcPluginOptions>(async (fastify, opts) => {
   fastify.register(fastifyTRPCPlugin, {
-    prefix: "/api/trpc",
+    prefix: '/api/trpc',
     trpcOptions: {
       router: appRouter,
       createContext,
       onError({ path, error }) {
         // report to error monitoring
-        console.error(`Error in tRPC handler on path '${path}':`, error);
+        console.error(`Error in tRPC handler on path '${path}':`, error)
       },
-    } satisfies FastifyTRPCPluginOptions<AppRouterType>["trpcOptions"],
-  });
-});
+    } satisfies FastifyTRPCPluginOptions<AppRouterType>['trpcOptions'],
+  })
+})
