@@ -5,11 +5,15 @@ This project was bootstrapped with Fastify-CLI.
 
 ## my commands
 
+https://github.com/turkerdev/fastify-type-provider-zod
+pnpm add @fastify/swagger @fastify/swagger-ui fastify-type-provider-zod
+
 ```bash
 cd code
 
 npm install fastify-cli -g
 fastify generate fastify --esm --lang=ts --standardlint
+npx fastify-cli generate app01  --esm --lang=ts --standardlint
 
 pnpm add @trpc/server fastify zod
 
@@ -20,6 +24,12 @@ pnpm add @trpc/client rxjs
 
 pnpm add svelte-routing
 npx @svelte-add/tailwindcss@latest --typography false
+
+// open api
+https://github.com/turkerdev/fastify-type-provider-zod
+pnpm add @fastify/swagger @fastify/swagger-ui fastify-type-provider-zod
+
+
 ```
 
 ## todos

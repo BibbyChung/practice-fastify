@@ -53,8 +53,11 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
   fastify.decorate('utils', {
     log: (...args: string[]) => console.log(...args),
   })
-  fastify.decorateRequest('user', () => {
-    return { name: 'BBBB' }
+
+  fastify.decorateRequest('user', {
+    getter() {
+      return { name: 'BBBBB' }
+    },
   })
 
   // add hooks
