@@ -2,7 +2,7 @@
 http://localhost:3000/api/hi
 
 ### json
-http://localhost:3000/api/hi-json
+curl http://localhost:3000/api/hi-json
 
 ### trpc
 GET http://localhost:3000/api/trpc/user.getUserById?input="0001"
@@ -22,3 +22,12 @@ WS ws://localhost:3000/api/trpc-ws
 #   }
 #   exports.waitPromise = writeStream();
 # }}
+
+### sse
+curl -N  -H "Accept:text/event-stream" http://localhost:3000/api/sse-start
+
+# const evtSource = new EventSource("http://localhost:3000/api/sse-start");
+# evtSource.onmessage = function(event) {
+# 	var dataobj = JSON.parse(event.data);
+#   console.log(dataobj)
+# }
