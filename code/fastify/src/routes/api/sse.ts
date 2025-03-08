@@ -11,6 +11,11 @@ const ssePoolsDic: Record<string, FastifyReply> = {}
 const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.register(FastifySSEPlugin)
 
+  const closeSSE = (res: FastifyReply) => {
+    res.sse({ event: 'close' })
+    res.sseContext.source.end()
+  }
+
   fastify.withTypeProvider<ZodTypeProvider>().get(
     '/sse-start',
     {
@@ -32,8 +37,14 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
       const sub = interval(1000)
         .pipe(
+          // tap((i) => {
+          //   console.log(`==> ${i}`)
+          //   if (i >= 5) {
+          //     closeSSE(res)
+          //     console.log(`==> ${i} close`)
+          //   }
+          // }),
           tap((i) => {
-            console.log(i)
             const obj: EventMessage = {
               id: i.toString(),
               data: JSON.stringify({
@@ -71,8 +82,7 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       const uuid = req.body.uuid
       const sseRes = ssePoolsDic[uuid]
       if (sseRes) {
-        sseRes.sse({ event: 'close' })
-        sseRes.sseContext.source.end()
+        closeSSE(sseRes)
       }
 
       res.status(200)
