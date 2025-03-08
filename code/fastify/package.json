@@ -12,7 +12,7 @@
     "start": "npm run build && fastify start -l info dist/app.js",
     "start:prod": "fastify start dist/app.js --address=0.0.0.0 --port=8080",
     "preview": "fastify start dist/app.js --address=0.0.0.0 --port=3000",
-    "build": "tsc",
+    "build": "rm -rf ./dist && tsc",
     "build:watch": "tsc -w",
     "dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:build:watch\" \"npm:dev:start\"",
     "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js"

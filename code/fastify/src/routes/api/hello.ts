@@ -5,65 +5,37 @@ import { z } from 'zod'
 
 const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.withTypeProvider<ZodTypeProvider>().get(
-    '/healthz',
-    {
-      schema: {
-        description: 'check healthz',
-        summary: 'check healthz',
-        tags: ['utils'],
-        querystring: z.object({}),
-        response: {
-          200: z.object({
-            msg: z.string(),
-          }),
-        },
-      },
-    },
-    async function (request, reply) {
-      const info = {
-        msg: 'success',
-      }
-      return reply.status(200).send(info)
-    }
-  )
-
-  const inputSchemaHi = z.object({
-    name: z.number(),
-  })
-
-  fastify.get(
     '/hi-text',
     {
       logLevel: 'trace',
       schema: {
-        description: 'hi',
-        summary: 'hi',
+        description: 'hi_description',
+        summary: 'hi_summary',
         tags: ['api test'],
-        querystring: inputSchemaHi,
+        querystring: z.object({
+          name: z.string(),
+        }),
         response: {
-          200: z.object({
-            msg: z.string(),
-          }),
+          200: z.string(),
         },
       },
     },
     async function (request, reply) {
       fastify.utils.log(`check it => fastify.utils.log`)
-      const q = request.query as z.infer<typeof inputSchemaHi>
-      const msg = `hello-world, ${q.name}`
+      const msg = `hello-world, ${request.query.name}`
 
       reply.headers({ 'Content-Type': 'text/plain' })
       return reply.status(200).send(msg)
     }
   )
 
-  fastify.get(
+  fastify.withTypeProvider<ZodTypeProvider>().get(
     '/hi-json',
     {
       logLevel: 'trace',
       schema: {
-        description: 'hi-json',
-        summary: 'hi-json',
+        description: 'hi-json_description',
+        summary: 'hi-json_summary',
         tags: ['api test'],
         querystring: z.object({}),
         response: {
