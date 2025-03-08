@@ -3,9 +3,6 @@ import { FastifyPluginAsync } from 'fastify'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 declare module 'fastify' {
   interface FastifyInstance {
     utils: {
@@ -19,6 +16,9 @@ declare module 'fastify' {
     }
   }
 }
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export type AppOptions = {
   // Place your custom options for app below here.
@@ -49,38 +49,6 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
     forceESM: true,
   })
 
-  // add decorators
-  fastify.decorate('utils', {
-    log: (...args: string[]) => console.log(...args),
-  })
-
-  fastify.decorateRequest('user', {
-    getter() {
-      return { name: 'BBBBB' }
-    },
-  })
-
-  // add hooks
-  fastify.addHook('onReady', (done) => {
-    fastify.log.info(`onReady hook`)
-    console.log(fastify.printRoutes({ commonPrefix: false }))
-    done()
-  })
-
-  fastify.addHook('onRequest', (req, res, done) => {
-    console.log(`onRequest hook`)
-    console.log(`user: ${req.user.name}`)
-    done()
-  })
-  fastify.addHook('onResponse', (req, res, done) => {
-    console.log(`onResponse hook`)
-    done()
-  })
-
-  fastify.addHook('onError', (request, reply, error, done) => {
-    console.log(`onError hook`)
-    done()
-  })
 }
 
 export default app

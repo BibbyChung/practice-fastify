@@ -34,6 +34,7 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get(
     '/hi-text',
     {
+      logLevel: 'trace',
       schema: {
         description: 'hi',
         summary: 'hi',
@@ -59,6 +60,7 @@ const router: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   fastify.get(
     '/hi-json',
     {
+      logLevel: 'trace',
       schema: {
         description: 'hi-json',
         summary: 'hi-json',
